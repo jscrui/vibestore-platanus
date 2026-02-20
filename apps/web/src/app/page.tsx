@@ -142,6 +142,7 @@ const initialState: FormState = {
 };
 
 const NAV_ITEMS = ['Method', 'Coverage', 'Scoring', 'Reports'];
+const HERO_DOTS = Array.from({ length: 45 }, (_, index) => index);
 
 function getVerdictMeta(verdict: Verdict) {
   return VERDICT_COPY[verdict];
@@ -216,6 +217,14 @@ export default function HomePage() {
 
   return (
     <main className="on-shell">
+      <div className="ambient-bg" aria-hidden="true">
+        <span className="orb orb-a" />
+        <span className="orb orb-b" />
+        <span className="orb orb-c" />
+        <span className="grid-noise" />
+        <span className="scan-line" />
+      </div>
+
       <header className="top-nav">
         <div className="brand-pill">VS</div>
         <nav className="nav-links" aria-label="Main navigation">
@@ -231,19 +240,43 @@ export default function HomePage() {
       </header>
 
       <section className="hero-stage">
-        <p className="hero-kicker">Commercial Site Intelligence</p>
-        <h1>Find profitable locations before your competitors do.</h1>
-        <p className="hero-copy">
-          Generate high-conviction expansion reports with a transparent score, hard metrics,
-          competitor map data, and an instant shareable report URL.
-        </p>
-        <div className="hero-actions">
-          <a href="#analyzer" className="button-main">
-            Generate report now
-          </a>
-          <a href="#result-panel" className="button-ghost">
-            See decision output
-          </a>
+        <div className="hero-content">
+          <p className="hero-kicker">Commercial Site Intelligence</p>
+          <h1>Find profitable locations before your competitors do.</h1>
+          <p className="hero-copy">
+            Generate high-conviction expansion reports with a transparent score, hard metrics,
+            competitor map data, and an instant shareable report URL.
+          </p>
+          <div className="hero-actions">
+            <a href="#analyzer" className="button-main">
+              Generate report now
+            </a>
+            <a href="#result-panel" className="button-ghost">
+              See decision output
+            </a>
+          </div>
+          <div className="hero-tags">
+            <span>Geo + Places Intelligence</span>
+            <span>Signal-based scoring engine</span>
+            <span>Instant board-ready report</span>
+          </div>
+        </div>
+
+        <div className="hero-visual" aria-hidden="true">
+          <div className="dot-matrix">
+            {HERO_DOTS.map((dot) => (
+              <span key={dot} className="dot-cell" />
+            ))}
+          </div>
+          <p className="hero-number">
+            97<span>.4</span>
+          </p>
+          <p className="hero-visual-label">signal confidence</p>
+          <div className="pulse-rings">
+            <span />
+            <span />
+            <span />
+          </div>
         </div>
       </section>
 
