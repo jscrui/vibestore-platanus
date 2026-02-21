@@ -174,7 +174,7 @@ export class AnalysisService {
       },
       report: {
         reportUrl: `/api/report/${requestId}`,
-        pdfUrl: null,
+        pdfUrl: `/api/report/${requestId}.pdf`,
       },
       timingMs: {
         ...timings,

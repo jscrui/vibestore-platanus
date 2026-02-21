@@ -27,6 +27,7 @@ async function bootstrap() {
     .addTag('Health', 'Operación de estado del servicio')
     .addTag('Analysis', 'Operaciones de análisis comercial')
     .addTag('Report', 'Reporte HTML imprimible por requestId')
+    .addTag('Chat', 'Captura conversacional de dirección, rubro y ticket promedio')
     .build();
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, swaggerDocument, {

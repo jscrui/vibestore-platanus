@@ -1,45 +1,140 @@
-export type Verdict = 'abrir' | 'abrir_con_condiciones' | 'no_abrir';
+export type BusinessCategory =
+  | 'CAFE'
+  | 'BAR'
+  | 'RESTAURANT'
+  | 'KIOSK'
+  | 'GYM'
+  | 'HAIR_SALON'
+  | 'PHARMACY'
+  | 'PET_SHOP'
+  | 'LAUNDRY'
+  | 'ELECTRONICS_REPAIR'
+  | 'BEAUTY_SALON'
+  | 'DENTIST'
+  | 'SUPERMARKET'
+  | 'CLOTHING'
+  | 'BOOKSTORE'
+  | 'CO_WORKING';
 
-export interface AnalysisRequest {
+export type TicketBucket = 'low' | 'mid' | 'high';
+export type Verdict = 'OPEN' | 'OPEN_WITH_CONDITIONS' | 'DO_NOT_OPEN';
+export type ChatSessionStatus = 'ACTIVE' | 'COMPLETED' | 'CLOSED';
+export type ChatRequiredField = 'address' | 'businessCategory' | 'avgTicket';
+
+export interface AnalyzeRequest {
   address: string;
-  businessCategory: string;
-  averageTicket?: number;
+  businessCategory: BusinessCategory;
+  avgTicket?: TicketBucket | number;
+  countryBias?: string;
+  placeId?: string;
 }
 
-export interface ScoreBreakdown {
-  competition: number;
-  competitorStrength: number;
-  demandProxy: number;
-  differentiationOpportunity: number;
+export interface ChatMessageRequest {
+  sessionId: string;
+  message: string;
 }
 
-export interface NearbyCompetitor {
-  id: string;
-  name: string;
-  rating: number | null;
-  reviewCount: number;
-  distanceMeters: number;
+export interface ChatCollectedData {
+  address?: string;
+  businessCategory?: BusinessCategory;
+  avgTicket?: number;
+}
+
+export interface ChatAnalysisPayload {
+  address: string;
+  businessCategory: BusinessCategory;
+  avgTicket: number;
+  countryBias: string;
+}
+
+export interface ChatResponse {
+  sessionId: string;
+  sessionStatus: ChatSessionStatus;
+  assistantMessage: string;
+  invalidAttempts: number;
+  remainingInvalidAttempts: number;
+  missingFields: ChatRequiredField[];
+  readyForAnalysis: boolean;
+  collectedData: ChatCollectedData;
+  analysisPayload?: ChatAnalysisPayload;
+}
+
+export interface AnalyzeLocation {
   lat: number;
   lng: number;
+  formattedAddress: string;
+  placeId?: string;
 }
 
-export interface AnalysisMetrics {
-  searchRadiusMeters: number;
-  totalCompetitors: number;
-  highRatedCompetitors: number;
-  avgCompetitorRating: number | null;
-  avgReviews: number;
+export interface AnalyzeMetrics {
+  competitionScore: number;
+  demandScore: number;
+  differentiationScore: number;
 }
 
-export interface AnalysisResult {
-  request: AnalysisRequest;
+export interface PriceGap {
+  isGap: boolean;
+  suggested?: string;
+  dominant?: string;
+  detail?: string;
+}
+
+export interface HardMetrics {
+  count_same_800m: number;
+  count_same_1500m: number;
+  density_all_800m: number;
+  avg_rating_same: number;
+  median_reviews_same: number;
+  total_reviews_all_800m: number;
+  count_food_drink_800m: number;
+  price_level_distribution: Record<string, number>;
+  detected_price_gap: PriceGap;
+}
+
+export interface CompetitorTop {
+  place_id: string;
+  name: string;
+  rating: number | null;
+  user_ratings_total: number;
+  price_level: number | null;
+  types: string[];
+  distance_m: number;
+}
+
+export interface AnalyzeMapData {
+  center: { lat: number; lng: number };
+  competitorsTop: CompetitorTop[];
+}
+
+export interface AnalyzeResponse {
+  requestId: string;
+  input: {
+    address: string;
+    businessCategory: BusinessCategory;
+    avgTicket?: TicketBucket | number;
+    countryBias: string;
+  };
+  location: AnalyzeLocation;
   viabilityScore: number;
   verdict: Verdict;
-  scoreBreakdown: ScoreBreakdown;
-  metrics: AnalysisMetrics;
-  competitors: NearbyCompetitor[];
+  metrics: AnalyzeMetrics;
+  hardMetrics: HardMetrics;
+  insights: string[];
   diagnosis: string;
-  actionableInsights: string[];
+  recommendationAngle: string;
+  mapData: AnalyzeMapData;
+  report: {
+    reportUrl: string;
+    pdfUrl: string | null;
+  };
+  timingMs: {
+    geocode: number;
+    nearby: number;
+    details: number;
+    score: number;
+    llm: number;
+    total: number;
+  };
   generatedAt: string;
   cacheHit: boolean;
 }

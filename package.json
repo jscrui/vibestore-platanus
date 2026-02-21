@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "start:frontend": "npm run dev --workspace @vibe-store/web",
-    "start:backend": "npm run dev:api --workspace @vibe-store/api",
+    "start:backend": "npm run start:dev --workspace @vibe-store/api",
     "start:both": "npm run start:frontend & npm run start:backend",
     "dev": "npm run dev --workspace @vibe-store/web",
     "dev:web": "npm run dev --workspace @vibe-store/web",

@@ -4,14 +4,15 @@ Frontend application for Vibe Store.
 
 ## Current Status
 
-This app currently contains the MVP UI shell:
+The frontend is integrated with backend chat + analyze flows:
 
-- input form
+- chat intake (`/api/chat/session/start`, `/api/chat/session/message`)
+- analyze run (`/api/analyze`)
 - loading/error states
-- score card + bars + insights sections
-- placeholder competitor map block
+- score card + bars + insights + competitor list
+- report link rendering from backend `report.reportUrl`
 
-Important: frontend calls the backend using `POST /api/analyze`. Remaining migration work is focused on full DTO alignment and richer UI features.
+Type contracts are shared from `@vibe-store/shared` to keep frontend/backend payloads aligned.
 
 ## Run Web Only
 
@@ -28,21 +29,11 @@ Default URL: `http://localhost:3000`
 - `NEXT_PUBLIC_API_URL`
   - Recommended: `http://localhost:4000/api`
 
-## Migration Checklist (next frontend step)
+## Integration Checklist (ongoing)
 
-1. Update request payload to:
-   - `address`
-   - `businessCategory` (enum, e.g. `CAFE`)
-   - `avgTicket` (`low|mid|high` or number)
-   - optional `countryBias`, `placeId`
-2. Update response typing to read:
-   - `viabilityScore`, `verdict`
-   - `metrics`, `hardMetrics`
-   - `insights`, `diagnosis`, `recommendationAngle`
-   - `mapData.competitorsTop`
-   - `report.reportUrl`
-3. Add report button linking to `report.reportUrl`.
-4. Replace map placeholder with actual map/pins.
+1. Keep shared contracts updated in `packages/shared/src/index.ts`.
+2. Validate API URL with `NEXT_PUBLIC_API_URL`.
+3. Extend UI with map/pins if needed (current list view already reads `mapData.competitorsTop`).
 
 ## Relevant Files
 

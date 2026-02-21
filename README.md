@@ -15,8 +15,8 @@ Given an address and business category (plus optional ticket), the backend:
 ## Repository Structure
 
 - `apps/api`: NestJS backend (`/api/analyze`, `/api/report/:id`, `/api/health`)
-- `apps/web`: Next.js frontend (UI MVP; contract migration pending)
-- `packages/shared`: shared TS types used by frontend MVP
+- `apps/web`: Next.js frontend integrada con chat + análisis
+- `packages/shared`: contratos TypeScript compartidos para alinear frontend/backend
 
 ## API Modules (NestJS)
 
@@ -60,9 +60,11 @@ Defined in `.env.example`:
 - `CACHE_TTL_SECONDS`: analyze response cache TTL
 - `DETAILS_LIMIT`: max place details fetched per request
 - `DETAILS_CONCURRENCY`: parallelism for details requests
-- `LLM_API_KEY`: optional, enables LLM insight generation
-- `LLM_ENDPOINT`: optional override for chat completions endpoint
-- `LLM_MODEL`: optional model selection
+- `LLM_API_KEY`: optional, enables LLM insight generation/chat extraction
+- `ANTHROPIC_API_KEY`: optional alias for `LLM_API_KEY`
+- `LLM_ENDPOINT`: optional override for LLM endpoint (default Anthropic Messages API)
+- `LLM_MODEL`: optional model selection (default `claude-3-5-sonnet-latest`)
+- `ANTHROPIC_VERSION`: Anthropic API version header (default `2023-06-01`)
 - `UPSTREAM_TIMEOUT_MS`: timeout for Google APIs in ms (default `10000`)
 - `LLM_TIMEOUT_MS`: timeout for LLM call in ms (default `10000`)
 - `NEXT_PUBLIC_API_URL`: frontend API base (default `http://localhost:4000/api`)
@@ -99,4 +101,4 @@ For full request/response schemas, use Swagger.
 ## Notes
 
 - If `GOOGLE_MAPS_API_KEY` is missing, `/api/analyze` returns a typed error.
-- If `LLM_API_KEY` is missing or LLM fails, insights are generated with deterministic fallback templates.
+- If `LLM_API_KEY`/`ANTHROPIC_API_KEY` is missing or LLM fails, insights are generated with deterministic fallback templates.

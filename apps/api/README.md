@@ -92,8 +92,10 @@ Optional:
 - `DETAILS_LIMIT` (default `20`)
 - `DETAILS_CONCURRENCY` (default `5`)
 - `LLM_API_KEY`
-- `LLM_ENDPOINT` (default OpenAI Chat Completions)
-- `LLM_MODEL` (default `gpt-4.1-mini`)
+- `ANTHROPIC_API_KEY` (alias of `LLM_API_KEY`)
+- `LLM_ENDPOINT` (default `https://api.anthropic.com/v1/messages`)
+- `LLM_MODEL` (default `claude-3-5-sonnet-latest`)
+- `ANTHROPIC_VERSION` (default `2023-06-01`)
 - `UPSTREAM_TIMEOUT_MS` (default `10000`)
 - `LLM_TIMEOUT_MS` (default `10000`)
 

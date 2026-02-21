@@ -13,23 +13,24 @@ export interface ScoreEngineResult {
 export class ScoreEngineService {
   compute(hardMetrics: HardMetrics): ScoreEngineResult {
     const saturationPenalty = clamp(
-      hardMetrics.count_same_800m * 4 + hardMetrics.count_same_1500m * 1.5,
+      Math.sqrt(hardMetrics.count_same_800m) * 3.5 +
+        Math.sqrt(hardMetrics.count_same_1500m) * 2.0,
       0,
-      55,
+      40,
     );
 
     const competitorStrengthPenalty = clamp(
-      (hardMetrics.avg_rating_same - 4.0) * 18 +
-        Math.log1p(hardMetrics.median_reviews_same) * 4,
+      (hardMetrics.avg_rating_same - 4.0) * 10 +
+        Math.log1p(hardMetrics.median_reviews_same) * 1.5,
       0,
-      25,
+      18,
     );
 
     const demandBonus = clamp(
-      Math.log1p(hardMetrics.total_reviews_all_800m) * 6 +
-        hardMetrics.density_all_800m * 0.3,
+      Math.log1p(hardMetrics.total_reviews_all_800m) * 1.5 +
+        hardMetrics.density_all_800m * 0.15,
       0,
-      25,
+      22,
     );
 
     const differentiationSignal = this.computeDifferentiationSignal(hardMetrics);
@@ -46,11 +47,11 @@ export class ScoreEngineService {
     const competitionBadness = clamp(
       saturationPenalty + competitorStrengthPenalty,
       0,
-      80,
+      70,
     );
 
-    const competitionScore = 100 - Math.round((competitionBadness / 80) * 100);
-    const demandScore = Math.round((demandBonus / 25) * 100);
+    const competitionScore = 100 - Math.round((competitionBadness / 70) * 100);
+    const demandScore = Math.round((demandBonus / 22) * 100);
     const differentiationScore = Math.round((differentiationBonus / 10) * 100);
 
     return {
